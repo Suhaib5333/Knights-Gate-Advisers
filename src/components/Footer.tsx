@@ -38,7 +38,7 @@ export default function Footer() {
         style={{
           maxWidth: 1280,
           margin: '0 auto',
-          padding: 'clamp(48px, 6vw, 80px) clamp(24px, 5vw, 80px)',
+          padding: 'clamp(32px, 4vw, 48px) clamp(24px, 5vw, 80px)',
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
           gap: 'clamp(32px, 4vw, 64px)',
@@ -227,24 +227,6 @@ export default function Footer() {
               </button>
             ))}
           </div>
-        </div>
-        {/* Legal disclaimer */}
-        <div style={{
-          maxWidth: 1280,
-          margin: '0 auto',
-          padding: '0 clamp(24px, 5vw, 80px) 24px',
-        }}>
-          <p style={{
-            fontSize: '0.72rem',
-            color: 'rgba(237,232,224,0.5)',
-            lineHeight: 1.6,
-          }}>
-            Knights Gate Advisers is a capital advisory firm operating in the Kingdom of Bahrain.
-            Nothing on this website constitutes an offer to sell or a solicitation of an offer to
-            buy any securities or investment product. Past performance is not indicative of future
-            results. This website is for informational purposes only and is directed at sophisticated
-            and institutional investors.
-          </p>
         </div>
       </div>
     </footer>

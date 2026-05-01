@@ -1,2 +1,2 @@
-{"category":"naming","observation":"camelCase-functions","confidence":106,"occurrences":106,"firstSeen":"2026-04-30T05:45:37.710Z","lastSeen":"2026-05-01T10:40:57.278Z","sources":["observer"],"examples":["Hero.tsx","Leadership.tsx","Contact.tsx","useSmoothScroll.ts","Header.tsx"]}
+{"category":"naming","observation":"camelCase-functions","confidence":108,"occurrences":108,"firstSeen":"2026-04-30T05:45:37.710Z","lastSeen":"2026-05-01T15:37:42.364Z","sources":["observer"],"examples":["Hero.tsx","Leadership.tsx","Contact.tsx","useSmoothScroll.ts","Header.tsx"]}
 {"category":"framework","observation":"react-component","confidence":17,"occurrences":17,"firstSeen":"2026-04-30T05:47:08.115Z","lastSeen":"2026-05-01T10:40:41.959Z","sources":["observer"],"examples":["Contact.tsx"]}
