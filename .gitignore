@@ -1,0 +1,11 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Mint working state (local, not shared)
+.mint/tasks/
+.mint/research/
+.mint/worktrees/
+.mint/plugins/

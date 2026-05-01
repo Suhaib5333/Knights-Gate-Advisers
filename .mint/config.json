@@ -1,0 +1,38 @@
+{
+  "stack": "typescript",
+  "packageManager": "bun",
+  "gates": {
+    "lint": "bun run lint",
+    "types": "bunx tsc --noEmit",
+    "tests": null
+  },
+  "reviewers": {
+    "spec": true,
+    "quality": true,
+    "security": true,
+    "conventions": true,
+    "tests": true,
+    "business": true,
+    "performance": false
+  },
+  "conventions": {
+    "docs": []
+  },
+  "business": {
+    "docs": []
+  },
+  "isolation": {
+    "plan": "worktree",
+    "ship": "worktree",
+    "quick": "branch"
+  },
+  "documenters": [],
+  "plugins": [],
+  "workspace": {
+    "repos": [
+      { "name": "kgadvisers", "path": ".", "stack": "typescript", "role": "primary", "dependsOn": [] },
+      { "name": "relaxing-spa", "path": "../relaxing-spa", "stack": "typescript", "role": "dependency", "dependsOn": [] },
+      { "name": "yellowsports", "path": "../yellowsports", "stack": "typescript", "role": "dependency", "dependsOn": [] }
+    ]
+  }
+}
