@@ -1,4 +1,6 @@
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { smoothScrollTo } from '../hooks/useSmoothScroll'
+import kgShield from '../assets/brand/logo2.png'
 
 const C = {
   gold: '#C9A96E',
@@ -18,15 +20,24 @@ const navLinks = [
 ]
 
 const KGLogo = () => (
-  <svg width="32" height="32" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M30 2L8 12V32C8 44 18 54 30 58C42 54 52 44 52 32V12L30 2Z" fill="none" stroke={C.gold} strokeWidth="1.5" />
-    <path d="M18 22H22V30L28 22H33L26 31L33 40H28L22 32V40H18V22Z" fill={C.gold} />
-    <path d="M35 22H42C44.5 22 46 23.5 46 26C46 27.8 45 29 43.5 29.5C45.2 30 46.5 31.2 46.5 33.5C46.5 37 44.5 40 41 40H35V22ZM39 28H41.5C42.5 28 43.2 27.3 43.2 26.2C43.2 25.1 42.5 24.5 41.5 24.5H39V28ZM39 37.5H41.5C43 37.5 43.8 36.5 43.8 35C43.8 33.5 43 32.5 41.5 32.5H39V37.5Z" fill={C.gold} />
-  </svg>
+  <img
+    src={kgShield}
+    alt="Knights Gate Advisers shield"
+    width={32}
+    height={32}
+    style={{ width: 32, height: 32, objectFit: 'contain', display: 'block' }}
+  />
 )
 
 export default function Footer() {
+  const location = useLocation()
+  const navigate = useNavigate()
+
   const handleNav = (section: string) => {
+    if (location.pathname !== '/') {
+      navigate(`/#${section}`)
+      return
+    }
     const el = document.getElementById(section)
     if (el) smoothScrollTo(el)
   }
@@ -145,7 +156,7 @@ export default function Footer() {
               kalawadhi@kgadvisers.com
             </a>
             <a
-              href="https://www.linkedin.com/in/khalil-alawadhi-281b2b123/"
+              href="https://www.linkedin.com/in/khalil-sharif-al-awadhi-a56ab2b/"
               target="_blank"
               rel="noopener noreferrer"
               style={{ fontSize: '0.85rem', color: C.muted, transition: 'color 0.2s' }}
@@ -209,9 +220,13 @@ export default function Footer() {
             © 2026 Knights Gate Advisers. All rights reserved.
           </span>
           <div style={{ display: 'flex', gap: 24 }}>
-            {['Privacy Policy', 'Disclaimer'].map(link => (
-              <button
-                key={link}
+            {[
+              { label: 'Privacy Policy', to: '/privacy-policy' },
+              { label: 'Disclaimer', to: '/disclaimer' },
+            ].map(link => (
+              <Link
+                key={link.label}
+                to={link.to}
                 style={{
                   fontSize: '0.78rem',
                   color: C.muted,
@@ -219,12 +234,14 @@ export default function Footer() {
                   letterSpacing: '0.03em',
                   padding: '6px 4px',
                   minHeight: 32,
+                  display: 'inline-flex',
+                  alignItems: 'center',
                 }}
                 onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = C.text }}
                 onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = C.muted }}
               >
-                {link}
-              </button>
+                {link.label}
+              </Link>
             ))}
           </div>
         </div>

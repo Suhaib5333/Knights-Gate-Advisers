@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { staggerContainer, fadeUpItem, slideFromLeft, slideFromRight, scrollReveal } from '../lib/animations'
+import { smoothScrollTo } from '../hooks/useSmoothScroll'
 
 const C = {
   gold: '#C9A96E',
@@ -101,8 +102,9 @@ export default function About() {
           <button
             onClick={() => {
               const el = document.getElementById('leadership')
-              if (el) el.scrollIntoView({ behavior: 'smooth' })
+              if (el) smoothScrollTo(el)
             }}
+            className="cta-arrow"
             style={{
               display: 'inline-flex',
               alignItems: 'center',
@@ -114,13 +116,11 @@ export default function About() {
               color: C.navy,
               padding: '12px 0',
               borderBottom: `1.5px solid ${C.gold}`,
-              transition: 'gap 0.25s ease',
+              cursor: 'pointer',
             }}
-            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.gap = '16px' }}
-            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.gap = '10px' }}
           >
-            Meet the Founder
-            <span style={{ fontSize: 16 }}>→</span>
+            <span>Meet the Founder</span>
+            <span className="cta-arrow-icon" style={{ fontSize: 16, display: 'inline-block' }}>→</span>
           </button>
         </motion.div>
 
@@ -153,14 +153,28 @@ export default function About() {
               <motion.div
                 key={i}
                 variants={fadeUpItem}
+                whileHover={{ x: 6 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 24 }}
                 style={{
                   display: 'grid',
-                  gridTemplateColumns: '1fr auto',
+                  gridTemplateColumns: 'auto 1fr auto',
+                  gap: 14,
                   alignItems: 'center',
                   padding: '14px 0',
                   borderBottom: `1px solid rgba(12,22,32,0.07)`,
+                  cursor: 'default',
                 }}
               >
+                <span
+                  aria-hidden="true"
+                  style={{
+                    width: 6,
+                    height: 6,
+                    borderRadius: '50%',
+                    background: C.gold,
+                    opacity: 0.6,
+                  }}
+                />
                 <div style={{
                   fontFamily: 'var(--font-display)',
                   fontSize: 'clamp(1rem, 1.5vw, 1.15rem)',
@@ -212,15 +226,26 @@ export default function About() {
             <motion.div
               key={i}
               variants={fadeUpItem}
+              whileHover={{ backgroundColor: 'rgba(201,169,110,0.05)' }}
+              className="value-cell"
               style={{
                 padding: '28px 32px',
-                borderLeft: i > 0 ? '1px solid rgba(12,22,32,0.08)' : 'none',
                 display: 'flex',
                 alignItems: 'center',
-                gap: 12,
+                gap: 14,
+                transition: 'background-color 0.3s ease',
               }}
             >
-              <div style={{ width: 6, height: 6, borderRadius: '50%', background: C.gold, flexShrink: 0 }} />
+              <motion.div
+                style={{ width: 6, height: 6, borderRadius: '50%', background: C.gold, flexShrink: 0 }}
+                animate={{ scale: [1, 1.4, 1] }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: 'easeInOut',
+                  delay: i * 0.4,
+                }}
+              />
               <span style={{
                 fontSize: 13,
                 fontWeight: 500,

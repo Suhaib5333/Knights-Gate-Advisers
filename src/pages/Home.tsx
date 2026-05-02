@@ -10,17 +10,20 @@ export default function Home() {
   return (
     <>
       <Helmet>
-        <title>Knights Gate Advisers — Capital · Partnerships · Performance</title>
+        <title>Knights Gate Advisers — GCC Capital Advisory · Manama, Bahrain</title>
         <meta
           name="description"
-          content="Knights Gate Advisers provides bespoke capital advisory and placement services to sovereign institutions, family offices, and global asset managers across the GCC."
+          content="Independent capital advisory built on 30 years of GCC relationships. Discreet, senior-led capital placement, fund placement, investor relations, and sovereign coverage for institutions, family offices, and global asset managers."
         />
-        <meta property="og:title" content="Knights Gate Advisers" />
-        <meta property="og:description" content="30 years of trust. One point of access to GCC capital." />
         <meta property="og:type" content="website" />
-        <link rel="canonical" href="https://www.kgadvisers.com" />
+        <meta property="og:title" content="Knights Gate Advisers — GCC Capital Advisory" />
+        <meta property="og:description" content="30 years of trust. One point of access to GCC capital." />
+        <meta property="og:url" content="https://www.kgadvisers.com/" />
+        <meta name="twitter:title" content="Knights Gate Advisers — GCC Capital Advisory" />
+        <meta name="twitter:description" content="30 years of trust. One point of access to GCC capital." />
+        <link rel="canonical" href="https://www.kgadvisers.com/" />
       </Helmet>
-      <main>
+      <main id="main">
         <Hero />
         <About />
         <Services />

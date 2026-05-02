@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { slideFromLeft, slideFromRight, staggerContainer, fadeUpItem } from '../lib/animations'
+import { Magnetic } from './motion'
 
 const C = {
   gold: '#C9A96E',
@@ -204,7 +205,7 @@ export default function Contact() {
               <div>
                 <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: C.gold, marginBottom: 2 }}>LinkedIn</div>
                 <a
-                  href="https://www.linkedin.com/in/khalil-alawadhi-281b2b123/"
+                  href="https://www.linkedin.com/in/khalil-sharif-al-awadhi-a56ab2b/"
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{ fontSize: '0.9rem', color: C.text, transition: 'color 0.2s' }}
@@ -335,8 +336,11 @@ export default function Contact() {
                 />
               </div>
 
-              <button
+              <Magnetic
                 type="submit"
+                strength={0.25}
+                ariaLabel="Send enquiry"
+                className="btn-primary-shine"
                 style={{
                   alignSelf: 'flex-start',
                   fontSize: 13,
@@ -347,20 +351,13 @@ export default function Contact() {
                   padding: '14px 36px',
                   borderRadius: 0,
                   background: C.gold,
-                  transition: 'all 0.25s ease',
                   cursor: 'pointer',
-                }}
-                onMouseEnter={e => {
-                  (e.currentTarget as HTMLElement).style.background = '#DBBF8A'
-                  ;(e.currentTarget as HTMLElement).style.transform = 'translateY(-1px)'
-                }}
-                onMouseLeave={e => {
-                  (e.currentTarget as HTMLElement).style.background = C.gold
-                  ;(e.currentTarget as HTMLElement).style.transform = 'translateY(0)'
+                  position: 'relative',
+                  overflow: 'hidden',
                 }}
               >
-                Send Enquiry
-              </button>
+                <span style={{ position: 'relative', zIndex: 1 }}>Send Enquiry</span>
+              </Magnetic>
 
               <p style={{ fontSize: '0.78rem', color: C.muted, marginTop: 4 }}>
                 All enquiries are handled with the strictest confidentiality.

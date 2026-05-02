@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { staggerContainer, fadeUpItem, slideFromLeft } from '../lib/animations'
+import { TiltCard } from './motion'
 
 const C = {
   gold: '#C9A96E',
@@ -116,42 +117,51 @@ export default function WhyKGA() {
               variants={fadeUpItem}
               style={{
                 gridColumn: i < 2 ? 'span 3' : 'span 2',
-                background: C.cardBg,
-                padding: 'clamp(28px, 3vw, 44px)',
-                borderTop: `2px solid ${C.gold}`,
-                transition: 'background 0.3s ease',
-                cursor: 'default',
               }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = C.cardHover }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = C.cardBg }}
             >
-              <div style={{
-                width: 28,
-                height: 1,
-                background: C.gold,
-                opacity: 0.45,
-                marginBottom: 24,
-              }} />
-              <h3 style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: i < 2
-                  ? 'clamp(1.2rem, 2vw, 1.5rem)'
-                  : 'clamp(1.1rem, 1.6vw, 1.3rem)',
-                color: C.navy,
-                fontWeight: 500,
-                marginBottom: 14,
-                letterSpacing: '0.01em',
-                lineHeight: 1.2,
-              }}>
-                {d.title}
-              </h3>
-              <p style={{
-                fontSize: '0.875rem',
-                color: C.muted,
-                lineHeight: 1.8,
-              }}>
-                {d.desc}
-              </p>
+              <TiltCard
+                max={4}
+                glare={true}
+                glareColor="rgba(201,169,110,0.10)"
+                className="card-lift card-trace"
+                style={{
+                  background: C.cardBg,
+                  padding: 'clamp(28px, 3vw, 44px)',
+                  borderTop: `2px solid ${C.gold}`,
+                  height: '100%',
+                }}
+                onMouseEnter={() => {}}
+              >
+                <div style={{ position: 'relative', zIndex: 2 }}>
+                  <div style={{
+                    width: 28,
+                    height: 1,
+                    background: C.gold,
+                    opacity: 0.45,
+                    marginBottom: 24,
+                  }} />
+                  <h3 style={{
+                    fontFamily: 'var(--font-display)',
+                    fontSize: i < 2
+                      ? 'clamp(1.2rem, 2vw, 1.5rem)'
+                      : 'clamp(1.1rem, 1.6vw, 1.3rem)',
+                    color: C.navy,
+                    fontWeight: 500,
+                    marginBottom: 14,
+                    letterSpacing: '0.01em',
+                    lineHeight: 1.2,
+                  }}>
+                    {d.title}
+                  </h3>
+                  <p style={{
+                    fontSize: '0.875rem',
+                    color: C.muted,
+                    lineHeight: 1.8,
+                  }}>
+                    {d.desc}
+                  </p>
+                </div>
+              </TiltCard>
             </motion.div>
           ))}
         </motion.div>

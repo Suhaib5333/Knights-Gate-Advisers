@@ -1,5 +1,7 @@
 import { motion } from 'framer-motion'
 import { staggerContainer, fadeUpItem, slideFromLeft } from '../lib/animations'
+import { Spotlight } from './motion'
+import { smoothScrollTo } from '../hooks/useSmoothScroll'
 
 const C = {
   gold: '#C9A96E',
@@ -61,6 +63,8 @@ export default function Services() {
           pointerEvents: 'none',
         }}
       />
+      {/* Cursor-follow gold spotlight */}
+      <Spotlight size={720} color="rgba(201,169,110,0.05)" />
 
       <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 clamp(24px, 5vw, 80px)', position: 'relative' }}>
         {/* Heading */}
@@ -106,31 +110,41 @@ export default function Services() {
           style={{ display: 'flex', flexDirection: 'column' }}
         >
           {services.map((s, i) => (
-            <motion.div
+            <motion.button
               key={i}
               variants={fadeUpItem}
+              type="button"
+              onClick={() => {
+                const el = document.getElementById('contact')
+                if (el) smoothScrollTo(el)
+              }}
+              className="service-row"
               style={{
                 display: 'grid',
-                gridTemplateColumns: '56px 1fr',
+                gridTemplateColumns: '56px 1fr auto',
                 gap: 'clamp(16px, 3vw, 40px)',
                 alignItems: 'start',
-                padding: 'clamp(28px, 3vw, 40px) 0',
+                padding: 'clamp(28px, 3vw, 40px) clamp(16px, 2vw, 24px)',
+                marginLeft: 'calc(clamp(16px, 2vw, 24px) * -1)',
+                marginRight: 'calc(clamp(16px, 2vw, 24px) * -1)',
                 borderBottom: '1px solid rgba(201,169,110,0.08)',
-                cursor: 'default',
-                transition: 'background 0.3s ease',
+                cursor: 'pointer',
+                textAlign: 'left',
+                width: 'calc(100% + clamp(32px, 4vw, 48px))',
+                background: 'transparent',
               }}
-              whileHover={{}}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(201,169,110,0.03)' }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent' }}
+              whileHover={{ backgroundColor: 'rgba(201,169,110,0.04)' }}
+              transition={{ duration: 0.3 }}
             >
               {/* Number */}
               <div style={{
                 fontFamily: 'var(--font-display)',
                 fontSize: 'clamp(1.4rem, 2.5vw, 2rem)',
-                color: 'rgba(201,169,110,0.25)',
+                color: 'rgba(201,169,110,0.35)',
                 fontWeight: 300,
                 lineHeight: 1,
                 paddingTop: 4,
+                transition: 'color 0.3s ease',
               }}>
                 {s.num}
               </div>
@@ -157,7 +171,27 @@ export default function Services() {
                 </p>
               </div>
 
-            </motion.div>
+              {/* Arrow indicator */}
+              <motion.div
+                aria-hidden="true"
+                className="service-arrow"
+                style={{
+                  alignSelf: 'center',
+                  width: 36,
+                  height: 36,
+                  borderRadius: '50%',
+                  border: `1px solid rgba(201,169,110,0.25)`,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: C.gold,
+                  fontSize: 14,
+                  transition: 'transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s ease, background 0.3s ease',
+                }}
+              >
+                →
+              </motion.div>
+            </motion.button>
           ))}
         </motion.div>
       </div>

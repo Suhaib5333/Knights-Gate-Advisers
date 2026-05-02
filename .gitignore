@@ -9,3 +9,16 @@ dist/
 .mint/research/
 .mint/worktrees/
 .mint/plugins/
+
+# Local tool / editor state
+.claude/
+.playwright-mcp/
+
+# Local screenshots / audit captures
+audit-*.png
+verify-*.png
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.log

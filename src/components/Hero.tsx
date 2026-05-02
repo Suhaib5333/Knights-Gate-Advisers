@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
-import { motion, animate, useInView } from 'framer-motion'
+import { motion, animate, useInView, useScroll, useTransform, useSpring } from 'framer-motion'
 import { fadeUpItem, slowSpring, staggerContainer } from '../lib/animations'
 import { smoothScrollTo } from '../hooks/useSmoothScroll'
+import { Magnetic } from './motion'
 import khalilHeroImg from '../assets/Khalil Photos/PuooLfoo.jpg'
 
 const C = {
@@ -38,6 +39,7 @@ const stats = [
 ]
 
 export default function Hero() {
+  const sectionRef = useRef<HTMLElement>(null)
   const [scrollY, setScrollY] = useState(0)
 
   useEffect(() => {
@@ -49,6 +51,19 @@ export default function Hero() {
 
   const fade = Math.max(0, 1 - scrollY / (window.innerHeight * 0.6))
 
+  // Scroll-driven motion for ambient elements
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start start', 'end start'],
+  })
+  const sealRotate = useTransform(scrollYProgress, [0, 1], [0, 35])
+  const sealScale = useTransform(scrollYProgress, [0, 1], [1, 1.15])
+  const portraitY = useSpring(useTransform(scrollYProgress, [0, 1], [0, 80]), {
+    stiffness: 60,
+    damping: 22,
+  })
+  const portraitScale = useTransform(scrollYProgress, [0, 1], [1, 1.06])
+
   const scrollToAbout = () => {
     const el = document.getElementById('about')
     if (el) smoothScrollTo(el)
@@ -56,6 +71,8 @@ export default function Hero() {
 
   return (
     <section
+      ref={sectionRef}
+      aria-label="Knights Gate Advisers — Hero"
       style={{
         position: 'relative',
         width: '100%',
@@ -81,8 +98,8 @@ export default function Hero() {
         }}
       />
 
-      {/* Khalil portrait — right side, desktop only */}
-      <div
+      {/* Khalil portrait — full-bleed right edge */}
+      <motion.div
         className="hero-portrait"
         aria-hidden="true"
         style={{
@@ -92,6 +109,8 @@ export default function Hero() {
           width: '44%',
           height: '100%',
           pointerEvents: 'none',
+          y: portraitY,
+          scale: portraitScale,
         }}
       >
         <img
@@ -124,7 +143,7 @@ export default function Hero() {
           height: '35%',
           background: `linear-gradient(to top, #091520, transparent)`,
         }} />
-      </div>
+      </motion.div>
 
       {/* Subtle grid pattern */}
       <svg
@@ -147,19 +166,82 @@ export default function Hero() {
         <rect width="100%" height="100%" fill="url(#grid)" />
       </svg>
 
-      {/* Diagonal gold accent line */}
-      <div
+      {/* Ambient seal — concentric compass-like emblem in the left navy zone */}
+      <motion.div
+        className="hero-seal"
         aria-hidden="true"
         style={{
           position: 'absolute',
-          top: 0,
-          right: '25%',
-          width: 1,
-          height: '100%',
-          background: `linear-gradient(to bottom, transparent 0%, rgba(201,169,110,0.12) 30%, rgba(201,169,110,0.06) 70%, transparent 100%)`,
+          top: '50%',
+          left: 'clamp(-360px, -14vw, -200px)',
+          y: '-50%',
+          width: 'min(68vh, 720px)',
+          aspectRatio: '1 / 1',
           pointerEvents: 'none',
+          zIndex: 1,
+          rotate: sealRotate,
+          scale: sealScale,
+          WebkitMaskImage: 'radial-gradient(circle at center, black 25%, transparent 70%)',
+          maskImage: 'radial-gradient(circle at center, black 25%, transparent 70%)',
         }}
-      />
+      >
+        <svg viewBox="0 0 600 600" width="100%" height="100%">
+          <g fill="none" stroke="#C9A96E" strokeWidth="0.6">
+            {/* concentric rings */}
+            <circle cx="300" cy="300" r="290" opacity="0.35" />
+            <circle cx="300" cy="300" r="240" opacity="0.4" />
+            <circle cx="300" cy="300" r="180" opacity="0.45" />
+            <circle cx="300" cy="300" r="120" opacity="0.5" />
+            <circle cx="300" cy="300" r="60" opacity="0.55" />
+            {/* cardinal axes — extend slightly beyond outer ring */}
+            <line x1="300" y1="20" x2="300" y2="60" opacity="0.45" />
+            <line x1="300" y1="540" x2="300" y2="580" opacity="0.45" />
+            <line x1="20" y1="300" x2="60" y2="300" opacity="0.45" />
+            <line x1="540" y1="300" x2="580" y2="300" opacity="0.45" />
+            {/* diagonal axes — shorter, tick-like */}
+            <line x1="105" y1="105" x2="135" y2="135" opacity="0.3" />
+            <line x1="465" y1="465" x2="495" y2="495" opacity="0.3" />
+            <line x1="105" y1="495" x2="135" y2="465" opacity="0.3" />
+            <line x1="465" y1="135" x2="495" y2="105" opacity="0.3" />
+          </g>
+          {/* center dot */}
+          <circle cx="300" cy="300" r="2.5" fill="#C9A96E" fillOpacity="0.7" />
+        </svg>
+      </motion.div>
+
+      {/* Editorial corner mark — bottom-left of viewport, fills negative space */}
+      <div
+        className="hero-corner-mark"
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          left: 'clamp(24px, 4vw, 56px)',
+          bottom: 'clamp(180px, 22vh, 260px)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'flex-start',
+          gap: 14,
+          zIndex: 2,
+          opacity: fade * 0.85,
+        }}
+      >
+        <div style={{
+          width: 1,
+          height: 56,
+          background: `linear-gradient(to bottom, transparent, ${C.gold} 50%, transparent)`,
+        }} />
+        <div style={{
+          fontSize: 9,
+          letterSpacing: '0.32em',
+          textTransform: 'uppercase',
+          color: 'rgba(237, 232, 224, 0.45)',
+          fontFamily: 'var(--font-sans)',
+          lineHeight: 1.6,
+        }}>
+          Manama · Bahrain<br />
+          <span style={{ color: C.gold, fontWeight: 600 }}>GCC Capital Advisory</span>
+        </div>
+      </div>
 
       {/* Main content */}
       <div
@@ -202,12 +284,13 @@ export default function Hero() {
             </span>
           </motion.div>
 
-          {/* Headline — per-line mask reveal */}
+          {/* Headline — per-line mask reveal. Italic descenders (f, g, j) need extra
+              line-height + bottom padding so they don't clip the overflow:hidden mask. */}
           <h1
             style={{
               fontFamily: 'var(--font-display)',
               fontSize: 'clamp(2.8rem, 6.5vw, 5.5rem)',
-              lineHeight: 1.1,
+              lineHeight: 1.18,
               fontWeight: 500,
               marginBottom: 36,
             }}
@@ -217,7 +300,7 @@ export default function Hero() {
               { text: 'One Point of Access', color: C.gold, italic: true, delay: 0.29 },
               { text: 'to GCC Capital.', color: C.text, delay: 0.43 },
             ] as Array<{ text: string; color: string; italic?: boolean; delay: number }>).map((line, i) => (
-              <div key={i} style={{ overflow: 'hidden' }}>
+              <div key={i} style={{ overflow: 'hidden', paddingBottom: '0.12em' }}>
                 <motion.span
                   initial={{ y: '105%' }}
                   animate={{ y: 0 }}
@@ -257,8 +340,10 @@ export default function Hero() {
             transition={{ ...slowSpring, delay: 0.44 }}
             style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}
           >
-            <button
+            <Magnetic
               onClick={() => smoothScrollTo(document.getElementById('contact')!)}
+              ariaLabel="Go to contact form"
+              className="btn-primary-shine"
               style={{
                 fontSize: 13,
                 fontWeight: 600,
@@ -268,21 +353,18 @@ export default function Hero() {
                 padding: '14px 32px',
                 borderRadius: 2,
                 background: C.gold,
-                transition: 'all 0.25s ease',
-              }}
-              onMouseEnter={e => {
-                (e.currentTarget as HTMLElement).style.background = '#DBBF8A'
-                ;(e.currentTarget as HTMLElement).style.transform = 'translateY(-1px)'
-              }}
-              onMouseLeave={e => {
-                (e.currentTarget as HTMLElement).style.background = C.gold
-                ;(e.currentTarget as HTMLElement).style.transform = 'translateY(0)'
+                cursor: 'pointer',
+                position: 'relative',
+                overflow: 'hidden',
               }}
             >
-              Get in Touch
-            </button>
-            <button
+              <span style={{ position: 'relative', zIndex: 1 }}>Get in Touch</span>
+            </Magnetic>
+            <Magnetic
               onClick={() => smoothScrollTo(document.getElementById('services')!)}
+              ariaLabel="Go to services section"
+              strength={0.22}
+              className="btn-ghost-light"
               style={{
                 fontSize: 13,
                 fontWeight: 500,
@@ -292,22 +374,47 @@ export default function Hero() {
                 padding: '14px 32px',
                 borderRadius: 2,
                 border: '1px solid rgba(237,232,224,0.2)',
-                transition: 'all 0.25s ease',
-              }}
-              onMouseEnter={e => {
-                (e.currentTarget as HTMLElement).style.borderColor = 'rgba(201,169,110,0.4)'
-                ;(e.currentTarget as HTMLElement).style.color = C.gold
-              }}
-              onMouseLeave={e => {
-                (e.currentTarget as HTMLElement).style.borderColor = 'rgba(237,232,224,0.2)'
-                ;(e.currentTarget as HTMLElement).style.color = C.text
+                cursor: 'pointer',
+                background: 'transparent',
               }}
             >
-              Our Services
-            </button>
+              <span>Our Services</span>
+            </Magnetic>
           </motion.div>
         </motion.div>
       </div>
+
+      {/* Mobile-only portrait — sibling of fade-bound text, so it stays visible
+          longer on scroll. Hidden ≥901px via CSS. */}
+      <motion.div
+        className="hero-portrait-mobile-wrap"
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.9, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        aria-hidden="true"
+      >
+        <div className="hero-portrait-mobile">
+          <div className="hero-portrait-mobile-frame">
+            <img
+              src={khalilHeroImg}
+              alt=""
+              className="hero-portrait-mobile-img"
+            />
+            <div className="hero-portrait-mobile-fade" />
+            <span className="hpm-corner hpm-corner-tl" />
+            <span className="hpm-corner hpm-corner-tr" />
+            <span className="hpm-corner hpm-corner-bl" />
+            <span className="hpm-corner hpm-corner-br" />
+            <div className="hero-portrait-mobile-caption">
+              <span className="hpm-rule" />
+              <div>
+                <div className="hpm-name">Khalil Sharif Alawadhi</div>
+                <div className="hpm-title">Founder & Managing Director</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </motion.div>
 
       {/* Stats bar */}
       <motion.div
@@ -322,10 +429,11 @@ export default function Hero() {
         }}
       >
         <div
+          className="hero-stats-grid"
           style={{
             maxWidth: 1280,
             margin: '0 auto',
-            padding: '32px clamp(24px, 5vw, 80px)',
+            padding: '32px clamp(20px, 5vw, 80px)',
             display: 'grid',
             gridTemplateColumns: 'repeat(4, 1fr)',
             gap: 0,
@@ -334,14 +442,15 @@ export default function Hero() {
           {stats.map((stat, i) => (
             <div
               key={i}
+              className="hero-stat-cell"
+              data-index={i}
               style={{
-                padding: '0 24px',
-                borderLeft: i > 0 ? '1px solid rgba(201,169,110,0.1)' : 'none',
+                padding: '0 clamp(10px, 2vw, 24px)',
+                minWidth: 0,
               }}
             >
-              <div style={{
+              <div className="hero-stat-num" style={{
                 fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(1.6rem, 3vw, 2.4rem)',
                 color: C.gold,
                 fontWeight: 500,
                 lineHeight: 1,
@@ -349,10 +458,8 @@ export default function Hero() {
               }}>
                 {stat.prefix}<CountUp target={stat.target} />{stat.suffix}
               </div>
-              <div style={{
-                fontSize: 12,
+              <div className="hero-stat-label" style={{
                 color: C.muted,
-                letterSpacing: '0.05em',
                 fontWeight: 400,
               }}>
                 {stat.label}

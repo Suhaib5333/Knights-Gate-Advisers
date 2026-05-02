@@ -1,6 +1,9 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { smoothScrollTo } from '../hooks/useSmoothScroll'
+import { ScrollProgress } from './motion'
+import kgShield from '../assets/brand/logo2.png'
 
 const C = {
   navy: '#091520',
@@ -10,22 +13,48 @@ const C = {
 }
 
 const KGLogo = ({ size = 36 }: { size?: number }) => (
-  <svg width={size} height={size} viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path
-      d="M30 2L8 12V32C8 44 18 54 30 58C42 54 52 44 52 32V12L30 2Z"
-      fill="none"
-      stroke={C.gold}
-      strokeWidth="1.5"
+  <span
+    aria-hidden="false"
+    style={{
+      position: 'relative',
+      display: 'inline-flex',
+      width: size,
+      height: size,
+      alignItems: 'center',
+      justifyContent: 'center',
+      transition: 'width 0.3s ease, height 0.3s ease',
+    }}
+  >
+    {/* Soft gold halo — lifts the logo off dark navy backgrounds */}
+    <span
+      aria-hidden="true"
+      style={{
+        position: 'absolute',
+        inset: -size * 0.35,
+        borderRadius: '50%',
+        background:
+          'radial-gradient(circle, rgba(201,169,110,0.28) 0%, rgba(201,169,110,0.10) 38%, transparent 70%)',
+        filter: 'blur(6px)',
+        pointerEvents: 'none',
+      }}
     />
-    <path
-      d="M18 22H22V30L28 22H33L26 31L33 40H28L22 32V40H18V22Z"
-      fill={C.gold}
+    <img
+      src={kgShield}
+      alt="Knights Gate Advisers shield"
+      width={size}
+      height={size}
+      style={{
+        position: 'relative',
+        width: size,
+        height: size,
+        objectFit: 'contain',
+        display: 'block',
+        filter:
+          'drop-shadow(0 0 10px rgba(201,169,110,0.35)) drop-shadow(0 1px 2px rgba(0,0,0,0.35))',
+        transition: 'width 0.3s ease, height 0.3s ease',
+      }}
     />
-    <path
-      d="M35 22H42C44.5 22 46 23.5 46 26C46 27.8 45 29 43.5 29.5C45.2 30 46.5 31.2 46.5 33.5C46.5 37 44.5 40 41 40H35V22ZM39 28H41.5C42.5 28 43.2 27.3 43.2 26.2C43.2 25.1 42.5 24.5 41.5 24.5H39V28ZM39 37.5H41.5C43 37.5 43.8 36.5 43.8 35C43.8 33.5 43 32.5 41.5 32.5H39V37.5Z"
-      fill={C.gold}
-    />
-  </svg>
+  </span>
 )
 
 const navLinks = [
@@ -43,8 +72,16 @@ export default function Header() {
   const [activeSection, setActiveSection] = useState('')
   const isNavigating = useRef(false)
   const navLockTimer = useRef<ReturnType<typeof setTimeout>>()
+  const location = useLocation()
+  const navigate = useNavigate()
+  const isHome = location.pathname === '/'
 
   useEffect(() => {
+    if (!isHome) {
+      // On non-home routes, no section to be active — header just shows nav
+      setActiveSection('')
+      return
+    }
     const sections = navLinks.map(l => l.section).filter(Boolean)
     const onScroll = () => {
       const y = window.scrollY
@@ -66,12 +103,30 @@ export default function Header() {
       }
       setActiveSection(current)
     }
+    onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+  }, [isHome])
+
+  // Header background tint on non-home routes — always show the scrolled bg
+  // since those pages don't have a dark hero behind the header.
+  useEffect(() => {
+    if (!isHome) setScrolled(true)
+  }, [isHome])
 
   const handleNavClick = useCallback((section: string) => {
     setMobileOpen(false)
+
+    // Cross-route navigation — if we're not on home, jump home first then scroll
+    if (!isHome) {
+      if (!section) {
+        navigate('/')
+      } else {
+        navigate(`/#${section}`)
+      }
+      return
+    }
+
     setActiveSection(section)
     isNavigating.current = true
     clearTimeout(navLockTimer.current)
@@ -82,7 +137,7 @@ export default function Header() {
     }
     const el = document.getElementById(section)
     if (el) smoothScrollTo(el)
-  }, [])
+  }, [isHome, navigate])
 
   const scrolledBg = scrolled
     ? 'rgba(9, 21, 32, 0.94)'
@@ -90,6 +145,7 @@ export default function Header() {
 
   return (
     <>
+      <ScrollProgress color={C.gold} height={2} />
       <header
         style={{
           position: 'fixed',
@@ -150,32 +206,35 @@ export default function Header() {
 
           {/* Desktop Nav */}
           <div className="nav-desktop" style={{ alignItems: 'center', gap: 32 }}>
-            {navLinks.map(link => (
-              <button
-                key={link.label}
-                onClick={() => handleNavClick(link.section)}
-                style={{
-                  fontSize: 13,
-                  fontWeight: 500,
-                  letterSpacing: '0.06em',
-                  textTransform: 'uppercase',
-                  color: activeSection === link.section ? C.gold : 'rgba(237, 232, 224, 0.55)',
-                  transition: 'color 0.25s ease',
-                  padding: '4px 0',
-                  position: 'relative',
-                }}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = C.gold }}
-                onMouseLeave={e => {
-                  (e.currentTarget as HTMLElement).style.color =
-                    activeSection === link.section ? C.gold : 'rgba(237, 232, 224, 0.55)'
-                }}
-              >
-                {link.label}
-              </button>
-            ))}
+            {navLinks.map(link => {
+              const isActive = activeSection === link.section
+              return (
+                <button
+                  key={link.label}
+                  onClick={() => handleNavClick(link.section)}
+                  className={`nav-link${isActive ? ' is-active' : ''}`}
+                  style={{
+                    fontSize: 13,
+                    fontWeight: 500,
+                    letterSpacing: '0.06em',
+                    textTransform: 'uppercase',
+                    color: isActive ? C.gold : 'rgba(237, 232, 224, 0.6)',
+                  }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = C.gold }}
+                  onMouseLeave={e => {
+                    (e.currentTarget as HTMLElement).style.color =
+                      isActive ? C.gold : 'rgba(237, 232, 224, 0.6)'
+                  }}
+                  aria-current={isActive ? 'page' : undefined}
+                >
+                  {link.label}
+                </button>
+              )
+            })}
 
             <button
               onClick={() => handleNavClick('contact')}
+              className="btn-primary-shine"
               style={{
                 fontSize: 12,
                 fontWeight: 600,
@@ -185,18 +244,11 @@ export default function Header() {
                 padding: '10px 22px',
                 borderRadius: 2,
                 background: C.gold,
-                transition: 'all 0.25s ease',
-              }}
-              onMouseEnter={e => {
-                (e.currentTarget as HTMLElement).style.background = '#DBBF8A'
-                ;(e.currentTarget as HTMLElement).style.transform = 'translateY(-1px)'
-              }}
-              onMouseLeave={e => {
-                (e.currentTarget as HTMLElement).style.background = C.gold
-                ;(e.currentTarget as HTMLElement).style.transform = 'translateY(0)'
+                position: 'relative',
+                overflow: 'hidden',
               }}
             >
-              Get in Touch
+              <span style={{ position: 'relative', zIndex: 1 }}>Get in Touch</span>
             </button>
           </div>
 
@@ -236,24 +288,72 @@ export default function Header() {
               gap: 36,
             }}
           >
-            {navLinks.map((link, i) => (
-              <motion.button
-                key={link.label}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.06 }}
-                onClick={() => handleNavClick(link.section)}
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  fontSize: 30,
-                  color: C.text,
-                  fontWeight: 400,
-                  letterSpacing: '0.04em',
-                }}
-              >
-                {link.label}
-              </motion.button>
-            ))}
+            {navLinks.map((link, i) => {
+              const isActive = activeSection === link.section
+              return (
+                <motion.button
+                  key={link.label}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.06 }}
+                  onClick={() => handleNavClick(link.section)}
+                  aria-current={isActive ? 'page' : undefined}
+                  style={{
+                    fontFamily: 'var(--font-display)',
+                    fontSize: 30,
+                    color: isActive ? C.gold : C.text,
+                    fontWeight: 400,
+                    letterSpacing: '0.04em',
+                    fontStyle: isActive ? 'italic' : 'normal',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 14,
+                    position: 'relative',
+                    padding: '4px 8px',
+                  }}
+                >
+                  {/* Active gold dot — slides in from the left */}
+                  <AnimatePresence>
+                    {isActive && (
+                      <motion.span
+                        layoutId="mobile-active-dot"
+                        initial={{ opacity: 0, scale: 0 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0 }}
+                        transition={{ type: 'spring', stiffness: 350, damping: 25 }}
+                        aria-hidden="true"
+                        style={{
+                          width: 6,
+                          height: 6,
+                          borderRadius: '50%',
+                          background: C.gold,
+                          boxShadow: '0 0 12px rgba(201,169,110,0.6)',
+                          flexShrink: 0,
+                        }}
+                      />
+                    )}
+                  </AnimatePresence>
+                  {link.label}
+                  {/* Active underline */}
+                  {isActive && (
+                    <motion.span
+                      layoutId="mobile-active-underline"
+                      transition={{ type: 'spring', stiffness: 350, damping: 30 }}
+                      aria-hidden="true"
+                      style={{
+                        position: 'absolute',
+                        left: 28,
+                        right: 8,
+                        bottom: -4,
+                        height: 1,
+                        background: C.gold,
+                        opacity: 0.6,
+                      }}
+                    />
+                  )}
+                </motion.button>
+              )
+            })}
             <motion.button
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}

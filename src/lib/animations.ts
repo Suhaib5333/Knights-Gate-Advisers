@@ -84,6 +84,36 @@ export const scrollReveal: Variants = {
   },
 }
 
+export const scaleIn: Variants = {
+  hidden: { opacity: 0, scale: 0.94, filter: 'blur(6px)' },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    filter: 'blur(0px)',
+    transition: { duration: 0.8, ease: [...easings.smooth] },
+  },
+}
+
+export const lineSweep: Variants = {
+  hidden: { scaleX: 0, transformOrigin: 'left' },
+  visible: {
+    scaleX: 1,
+    transition: { duration: 1, ease: [...easings.smooth] },
+  },
+}
+
+/**
+ * Stagger that ramps up speed for long lists — first items reveal slower,
+ * subsequent items snap in faster so a long list never feels sluggish.
+ */
+export const staggerFast: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.06, delayChildren: 0.1 },
+  },
+}
+
 export function prefersReducedMotion(): boolean {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches
 }
