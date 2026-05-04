@@ -35,6 +35,10 @@ const differentiators = [
     title: 'Cross-Asset Expertise',
     desc: 'Deep expertise across Private Equity, Private Credit, Real Assets, Alternatives, and Public Equities, enabling holistic advice across an investor\'s full portfolio.',
   },
+  {
+    title: 'Top-Down Access',
+    desc: 'We engage directly with chief executives, executive directors, and principals — never junior teams or layered approvals. Faster decisions, less bureaucracy, cleaner mandates.',
+  },
 ]
 
 export default function WhyKGA() {
@@ -107,7 +111,7 @@ export default function WhyKGA() {
           className="why-kga-grid"
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(6, 1fr)',
+            gridTemplateColumns: 'repeat(12, 1fr)',
             gap: 3,
           }}
         >
@@ -116,7 +120,7 @@ export default function WhyKGA() {
               key={i}
               variants={fadeUpItem}
               style={{
-                gridColumn: i < 2 ? 'span 3' : 'span 2',
+                gridColumn: i < 2 ? 'span 6' : 'span 3',
               }}
             >
               <TiltCard

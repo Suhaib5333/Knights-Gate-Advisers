@@ -238,8 +238,11 @@ html.lenis, html.lenis body { height: auto; }
   }
 }
 
-/* Why KGA bento grid responsive */
-@media (max-width: 860px) {
+/* Why KGA bento grid responsive
+   Desktop ≥1100px: 12-col grid, 2 wide cards (span 6) on top + 4 narrow (span 3) below.
+   Below 1100px the narrow cards get too tight for the body copy, so we flip to a
+   2-column layout (3 rows of 2) until single-column kicks in at 540px. */
+@media (max-width: 1100px) {
   .why-kga-grid {
     grid-template-columns: repeat(2, 1fr) !important;
   }
