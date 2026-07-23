@@ -11,10 +11,15 @@
          Advisors, KGA — all spelling variants are surfaced deliberately so
          the entity resolves regardless of how it is typed into search.
     ════════════════════════════════════════════════════════════ -->
-    <!-- Per-page <title>, description, canonical, and og/twitter title-url-type
-         are owned by react-helmet (see src/pages/*). This <title> is a global
-         fallback that Helmet overrides in place. -->
+    <!-- These are homepage defaults present in the raw HTML for crawlers. On
+         sub-pages react-helmet overrides them at runtime; the build-time
+         prerender (scripts/prerender.mjs) de-duplicates so only the correct
+         per-page tag remains in each static file. -->
     <title>Knights Gate Advisers | GCC Capital Advisory · Manama, Bahrain</title>
+    <meta
+      name="description"
+      content="Knights Gate Advisers (KG Advisers / Knights Gate Advisors) is an independent capital advisory firm in Manama, Bahrain. Built on 30+ years of relationships across GCC sovereign wealth funds, family offices, and global asset managers — senior-led capital raising, fund placement, investor relations, and sovereign coverage."
+    />
     <meta
       name="keywords"
       content="Knights Gate Advisers, Knights Gate Advisors, KG Advisers, KG Advisors, KGA, Knights Gate, GCC capital advisory, sovereign wealth advisory, fund placement Middle East, Bahrain investment advisory, family office GCC, capital raising Gulf, Khalil Alawadhi, institutional placement GCC, private equity placement Middle East, placement agent Bahrain, capital advisory Manama"
@@ -44,6 +49,11 @@
     <meta name="apple-mobile-web-app-title" content="Knights Gate" />
     <meta name="application-name" content="Knights Gate Advisers" />
 
+    <!-- Canonical + language alternates (homepage default; per-page via helmet) -->
+    <link rel="canonical" href="https://www.kgadvisers.com/" />
+    <link rel="alternate" hreflang="en" href="https://www.kgadvisers.com/" />
+    <link rel="alternate" hreflang="x-default" href="https://www.kgadvisers.com/" />
+
     <!-- ═══════════════════════════════════════════════════════════
          FAVICONS · APP ICONS · WINDOWS TILES
          Full coverage so the mark renders in browser tabs, bookmarks,
@@ -67,8 +77,15 @@
          1200×630 landscape share card is primary; 512² square is a
          secondary fallback for platforms that prefer square.
     ════════════════════════════════════════════════════════════ -->
-    <!-- og:type, og:title, og:description, og:url are per-page (react-helmet). -->
+    <!-- og:type/title/description/url are homepage defaults; helmet overrides per-page. -->
+    <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Knights Gate Advisers" />
+    <meta property="og:title" content="Knights Gate Advisers — GCC Capital Advisory" />
+    <meta
+      property="og:description"
+      content="30 years of trust. One point of access to GCC capital. Independent capital advisory for sovereign institutions, family offices, and global asset managers across the Gulf."
+    />
+    <meta property="og:url" content="https://www.kgadvisers.com/" />
     <meta property="og:image" content="https://www.kgadvisers.com/og-image.png" />
     <meta property="og:image:secure_url" content="https://www.kgadvisers.com/og-image.png" />
     <meta property="og:image:type" content="image/png" />
@@ -77,8 +94,10 @@
     <meta property="og:image:alt" content="Knights Gate Advisers — GCC Capital Advisory · Manama, Bahrain" />
     <meta property="og:locale" content="en_US" />
 
-    <!-- Twitter / X Card (title + description are per-page via react-helmet) -->
+    <!-- Twitter / X Card (title + description are homepage defaults; helmet overrides) -->
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Knights Gate Advisers — GCC Capital Advisory" />
+    <meta name="twitter:description" content="30 years of trust. One point of access to GCC capital. Senior-led capital advisory across the Gulf." />
     <meta name="twitter:image" content="https://www.kgadvisers.com/og-image.png" />
     <meta name="twitter:image:alt" content="Knights Gate Advisers — GCC Capital Advisory" />
 

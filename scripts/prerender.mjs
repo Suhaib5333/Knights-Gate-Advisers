@@ -130,6 +130,34 @@ async function main() {
       })
       await page.waitForTimeout(600)
 
+      // De-duplicate the <head>: the base index.html carries homepage-default
+      // title/description/canonical/og/twitter tags for raw-HTML crawlers, and
+      // react-helmet injects the per-page versions (marked data-rh). Where a
+      // Helmet-managed twin exists, drop the static default so each prerendered
+      // file has exactly one correct tag.
+      await page.evaluate(() => {
+        const keyOf = (el) => {
+          const t = el.tagName.toLowerCase()
+          if (t === 'title') return 'title'
+          if (t === 'link' && el.getAttribute('rel') === 'canonical') return 'canonical'
+          if (t === 'meta' && el.hasAttribute('name')) return 'name:' + el.getAttribute('name')
+          if (t === 'meta' && el.hasAttribute('property')) return 'prop:' + el.getAttribute('property')
+          return null
+        }
+        const managed = new Set()
+        document.head.querySelectorAll('[data-rh]').forEach((el) => {
+          const k = keyOf(el)
+          if (k) managed.add(k)
+        })
+        document.head
+          .querySelectorAll('title, link[rel="canonical"], meta[name], meta[property]')
+          .forEach((el) => {
+            if (el.hasAttribute('data-rh')) return
+            const k = keyOf(el)
+            if (k && managed.has(k)) el.remove()
+          })
+      })
+
       let html = await page.content()
       if (!html.startsWith('<!DOCTYPE') && !html.startsWith('<!doctype')) {
         html = '<!doctype html>\n' + html
