@@ -4,7 +4,19 @@ import About from '../components/About'
 import Services from '../components/Services'
 import WhyKGA from '../components/WhyKGA'
 import Leadership from '../components/Leadership'
+import FAQ, { faqs } from '../components/FAQ'
 import Contact from '../components/Contact'
+
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  '@id': 'https://www.kgadvisers.com/#faq',
+  mainEntity: faqs.map(f => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+}
 
 export default function Home() {
   return (
@@ -22,6 +34,9 @@ export default function Home() {
         <meta name="twitter:title" content="Knights Gate Advisers — GCC Capital Advisory" />
         <meta name="twitter:description" content="30 years of trust. One point of access to GCC capital." />
         <link rel="canonical" href="https://www.kgadvisers.com/" />
+        <link rel="alternate" hrefLang="en" href="https://www.kgadvisers.com/" />
+        <link rel="alternate" hrefLang="x-default" href="https://www.kgadvisers.com/" />
+        <script type="application/ld+json">{JSON.stringify(faqJsonLd)}</script>
       </Helmet>
       <main id="main">
         <Hero />
@@ -29,6 +44,7 @@ export default function Home() {
         <Services />
         <WhyKGA />
         <Leadership />
+        <FAQ />
         <Contact />
       </main>
     </>

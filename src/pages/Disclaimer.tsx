@@ -231,10 +231,26 @@ export default function Disclaimer() {
         <title>Disclaimer — Knights Gate Advisers</title>
         <meta
           name="description"
-          content="Disclaimer for Knights Gate Advisers — terms of use, regulatory notes, and limitations applicable to information presented on this website."
+          content="Disclaimer for Knights Gate Advisers (KG Advisers) — terms of use, regulatory notes, and limitations applicable to information presented on this website."
         />
-        <meta name="robots" content="index,follow" />
+        <meta name="robots" content="index, follow, max-image-preview:large" />
         <link rel="canonical" href="https://www.kgadvisers.com/disclaimer" />
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content="Disclaimer — Knights Gate Advisers" />
+        <meta property="og:description" content="Terms of use, regulatory notes, and limitations for the Knights Gate Advisers website." />
+        <meta property="og:url" content="https://www.kgadvisers.com/disclaimer" />
+        <meta name="twitter:title" content="Disclaimer — Knights Gate Advisers" />
+        <meta name="twitter:description" content="Terms of use, regulatory notes, and limitations for the Knights Gate Advisers website." />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.kgadvisers.com/' },
+              { '@type': 'ListItem', position: 2, name: 'Disclaimer', item: 'https://www.kgadvisers.com/disclaimer' },
+            ],
+          })}
+        </script>
       </Helmet>
 
       <motion.main

@@ -99,6 +99,8 @@ export default function Leadership() {
             <motion.img
               src={khalilPortrait}
               alt="Khalil Sharif Alawadhi — Founder & Managing Director, Knights Gate Advisers"
+              loading="lazy"
+              decoding="async"
               variants={{
                 rest: { scale: 1 },
                 hover: { scale: 1.04 },

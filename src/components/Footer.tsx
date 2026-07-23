@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { smoothScrollTo } from '../hooks/useSmoothScroll'
-import kgShield from '../assets/brand/logo2.png'
+import kgShield from '../assets/brand/logo2-opt.png'
 
 const C = {
   gold: '#C9A96E',
@@ -16,6 +16,7 @@ const navLinks = [
   { label: 'Services', section: 'services' },
   { label: 'Leadership', section: 'leadership' },
   { label: 'Why KGA', section: 'why-kga' },
+  { label: 'FAQ', section: 'faq' },
   { label: 'Contact', section: 'contact' },
 ]
 

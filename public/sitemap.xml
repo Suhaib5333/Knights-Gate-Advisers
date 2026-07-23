@@ -1,20 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://www.kgadvisers.com/</loc>
-    <lastmod>2026-05-02</lastmod>
+    <lastmod>2026-07-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.kgadvisers.com/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.kgadvisers.com/" />
+    <image:image>
+      <image:loc>https://www.kgadvisers.com/og-image.png</image:loc>
+      <image:title>Knights Gate Advisers — GCC Capital Advisory</image:title>
+      <image:caption>Independent capital advisory for sovereign institutions, family offices, and global asset managers across the GCC.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://www.kgadvisers.com/privacy-policy</loc>
-    <lastmod>2026-05-02</lastmod>
+    <lastmod>2026-07-23</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://www.kgadvisers.com/disclaimer</loc>
-    <lastmod>2026-05-02</lastmod>
+    <lastmod>2026-07-23</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>

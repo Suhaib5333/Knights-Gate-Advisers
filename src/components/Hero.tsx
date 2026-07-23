@@ -3,7 +3,7 @@ import { motion, animate, useInView, useScroll, useTransform, useSpring } from '
 import { fadeUpItem, slowSpring, staggerContainer } from '../lib/animations'
 import { smoothScrollTo } from '../hooks/useSmoothScroll'
 import { Magnetic } from './motion'
-import khalilHeroImg from '../assets/Khalil Photos/PuooLfoo.jpg'
+import khalilHeroImg from '../assets/Khalil Photos/PuooLfoo-hero.webp'
 
 const C = {
   gold: '#C9A96E',
@@ -116,6 +116,8 @@ export default function Hero() {
         <img
           src={khalilHeroImg}
           alt=""
+          fetchPriority="high"
+          decoding="async"
           style={{
             width: '100%',
             height: '100%',
@@ -398,6 +400,7 @@ export default function Hero() {
             <img
               src={khalilHeroImg}
               alt=""
+              decoding="async"
               className="hero-portrait-mobile-img"
             />
             <div className="hero-portrait-mobile-fade" />

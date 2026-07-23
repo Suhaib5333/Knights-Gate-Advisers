@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { smoothScrollTo } from '../hooks/useSmoothScroll'
 import { ScrollProgress } from './motion'
-import kgShield from '../assets/brand/logo2.png'
+import kgShield from '../assets/brand/logo2-opt.png'
 
 const C = {
   navy: '#091520',
@@ -63,6 +63,7 @@ const navLinks = [
   { label: 'Services', section: 'services' },
   { label: 'Why KGA', section: 'why-kga' },
   { label: 'Leadership', section: 'leadership' },
+  { label: 'FAQ', section: 'faq' },
   { label: 'Contact', section: 'contact' },
 ]
 

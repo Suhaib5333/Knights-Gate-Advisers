@@ -229,10 +229,26 @@ export default function PrivacyPolicy() {
         <title>Privacy Policy — Knights Gate Advisers</title>
         <meta
           name="description"
-          content="Privacy Policy for Knights Gate Advisers — how we collect, use, and protect personal information in the course of our capital advisory practice."
+          content="Privacy Policy for Knights Gate Advisers (KG Advisers) — how we collect, use, and protect personal information in the course of our capital advisory practice."
         />
-        <meta name="robots" content="index,follow" />
+        <meta name="robots" content="index, follow, max-image-preview:large" />
         <link rel="canonical" href="https://www.kgadvisers.com/privacy-policy" />
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content="Privacy Policy — Knights Gate Advisers" />
+        <meta property="og:description" content="How Knights Gate Advisers collects, uses, and protects personal information." />
+        <meta property="og:url" content="https://www.kgadvisers.com/privacy-policy" />
+        <meta name="twitter:title" content="Privacy Policy — Knights Gate Advisers" />
+        <meta name="twitter:description" content="How Knights Gate Advisers collects, uses, and protects personal information." />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.kgadvisers.com/' },
+              { '@type': 'ListItem', position: 2, name: 'Privacy Policy', item: 'https://www.kgadvisers.com/privacy-policy' },
+            ],
+          })}
+        </script>
       </Helmet>
 
       <motion.main

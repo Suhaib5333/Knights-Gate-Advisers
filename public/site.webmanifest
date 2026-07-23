@@ -1,8 +1,19 @@
 {
+  "id": "/",
   "name": "Knights Gate Advisers",
   "short_name": "Knights Gate",
   "description": "Independent capital advisory and placement services for sovereign institutions, family offices, and global asset managers across the GCC.",
   "icons": [
+    {
+      "src": "/favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
     {
       "src": "/android-chrome-192x192.png",
       "sizes": "192x192",
@@ -14,12 +25,21 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
   "theme_color": "#091520",
   "background_color": "#091520",
   "display": "standalone",
-  "start_url": "/",
+  "orientation": "portrait-primary",
+  "start_url": "/?utm_source=pwa",
   "scope": "/",
-  "lang": "en"
+  "lang": "en",
+  "dir": "ltr",
+  "categories": ["finance", "business", "consulting"]
 }
